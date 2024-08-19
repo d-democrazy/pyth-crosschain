@@ -31,7 +31,8 @@ contract PythAggregatorV3 {
         pyth.updatePriceFeeds{value: fee}(priceUpdateData);
 
         // refund remaining eth
-        payable(msg.sender).call{value: address(this).balance}("");
+        (bool success, ) = payable(msg.sender).call{value: address(this).balance}("");
+        require(success, "Transfer failed.");
     }
 
     function decimals() public view virtual returns (uint8) {
